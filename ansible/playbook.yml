@@ -1,0 +1,23 @@
+- hosts: all
+
+  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      become: true
+      become_user: root
+      become_method: sudo
+      changed_when: False
+    - setup: # aka gather_facts
+
+
+- hosts: jira
+  become: yes
+  become_method: sudo
+  roles: 
+    - role: "deveth0.oracle-java"
+      oracle_java_version: 8 
+    - role: "hswong3i.jira"
+      jira_hash_salt: ""
+      jira_pass: ""
+      jira_user: "jira"
